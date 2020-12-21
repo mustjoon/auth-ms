@@ -1,8 +1,21 @@
-# Authentication service to be used on different projects
+## Authentication microservice (work in progress)
+
+### Installation
+
+ [Node.js](https://nodejs.org/) required.
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+$ cd auth-ms
+$ yarn 
+$ yarn dev
+```
 
 
-## TODO:
-1) create service
-2) create docker-composile file
+### Todo
 
 
+* Start using docker as dev tool
+* Add more mailer options
+* Maybe create detailed documentation of endpoints etc
