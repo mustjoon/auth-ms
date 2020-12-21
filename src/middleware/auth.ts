@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-import { ErrorHandler } from '../helpers/error';
+import { ErrorHandler } from './error';
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.get('Authorization');

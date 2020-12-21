@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import { User } from '../entity/user';
 import { Token } from '../entity/token';
-import { ErrorHandler } from '../helpers/error';
+import { ErrorHandler } from '../middleware/error';
 
 import { OrmService } from './orm-service';
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants';

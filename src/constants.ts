@@ -1,5 +1,5 @@
 /*
-    Constants which don't need to be set per env 
+    Constants which don't need to be set per env   
 */
 
 export const ACCESS_TOKEN_EXPIRES_IN = '20m';

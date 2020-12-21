@@ -1,6 +1,6 @@
 import sgMail from '@sendgrid/mail';
 
-import { ErrorHandler } from '../helpers/error';
+import { ErrorHandler } from '../middleware/error';
 import { User } from '../entity/user';
 
 interface MailOptions {

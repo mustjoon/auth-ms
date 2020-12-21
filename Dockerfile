@@ -1,21 +1,17 @@
-FROM node:12-slim
+FROM node
 
-RUN apt-get update && apt-get install -y \
-    curl
+# Create app directory
+RUN mkdir -p /app
+WORKDIR /app
 
-WORKDIR /starter
-ENV NODE_ENV development
+# Install app dependencies
+COPY package.json /app
+COPY yarn.lock /app
+RUN yarn
 
-COPY package.json /starter/package.json
+# Bundle app source
+COPY . /app
 
-
-
-COPY .env.example /starter/.env.example
-COPY . /starter
-
-RUN npm install
-RUN npm run copy-static-assets
-
-CMD ["npm","start"]
-
-EXPOSE 8080
+#ENTRYPOINT ["yarn", "start", "-H", "0.0.0.0"]
+EXPOSE 1337
+CMD [ "yarn", "start" ]

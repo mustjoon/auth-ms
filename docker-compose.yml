@@ -1,0 +1,52 @@
+  
+version: '3.6'
+services:
+  mysql:
+    image: mysql:8.0.1
+    container_name: mysql-local
+    command: "--default-authentication-plugin=mysql_native_password"
+    restart: on-failure
+    networks:
+      - gateway
+    environment:
+      - MYSQL_ROOT_PASSWORD=${TYPEORM_PASSWORD}
+    ports:
+      - '3306:3306'
+    volumes:
+      - .docker/data/db:/var/lib/mysql
+     
+  node:
+    build: .
+    command: yarn run dev
+    container_name: auth-ms
+    networks:
+      - gateway
+    links:
+      - mysql
+    environment:
+      - PORT=1337
+      - TYPEORM_HOST=mysql-local
+    ports:
+      - '8085:1337'
+    depends_on: 
+      - mysql 
+    volumes:
+      - .:/app
+
+  app:
+    depends_on:
+      - mysql
+    links:
+     - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    networks:
+      - gateway
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mysql-local
+networks:
+  gateway: {}
+
+     

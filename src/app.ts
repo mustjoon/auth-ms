@@ -4,37 +4,42 @@ import bodyparser from 'body-parser';
 import cors from 'cors';
 
 import api from './routes';
-import { handleError } from './helpers/error';
+import { handleError } from './middleware/error';
+import { initDb } from './util/init-db';
 
-const port = process.env.PORT || 1337;
+// eslint-disable-next-line
+require('dotenv').config()
 
-const init = async (): Promise<void> => {
+const app = express();
+
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(cors());
+
+app.get('/', (req: Request, res: Response) => {
+  return res.status(200).send('Welcome');
+});
+
+initDb().then(async () => {
   const connectionOptions = await getConnectionOptions();
-  Object.assign(connectionOptions, { entities: [__dirname + '/entity/*.ts'], synchronize: true });
+  const customOptions = {
+    entities: [__dirname + '/entity/*.ts'],
+    synchronize: true,
+    migrations: [__dirname + '/migrations/*.ts'],
+    cli: {
+      migrationsDir: __dirname + '/migration',
+    },
+  };
 
-  createConnection(connectionOptions).then(async () => {
-    const app = express();
+  Object.assign(connectionOptions, customOptions);
+  await createConnection(connectionOptions);
 
-    app.use(bodyparser.json());
-    app.use(bodyparser.urlencoded({ extended: false }));
-    app.use(cors());
+  app.use('/api', api);
 
-    app.get('/', (req: Request, res: Response) => {
-      return res.status(200).send('Welcome');
-    });
-
-    app.use('/api', api);
-
-    app.use((err, req: Request, res: Response, next) => {
-      handleError(err, res);
-      next(err);
-    });
-
-    app.listen(port, () => {
-      console.log('  App is running at http://localhost:%d in %s mode', port, app.get('env'));
-      console.log('  Press CTRL-C to stop\n');
-    });
+  app.use((err, req: Request, res: Response, next) => {
+    handleError(err, res);
+    next(err);
   });
-};
+});
 
-init();
+module.exports = app;

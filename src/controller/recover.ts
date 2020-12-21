@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { ErrorHandler } from '../helpers/error';
+import { ErrorHandler } from '../middleware/error';
 import userService from '../service/user';
 import mailerService from '../service/mailer';
 

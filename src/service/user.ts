@@ -2,7 +2,7 @@ import { MoreThan } from 'typeorm';
 import bcrypt from 'bcrypt';
 
 import { User } from '../entity/user';
-import { ErrorHandler } from '../helpers/error';
+import { ErrorHandler } from '../middleware/error';
 
 import { OrmService } from './orm-service';
 
