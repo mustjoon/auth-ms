@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"bolazoo\",\r\n    \"password\": \"password1\"\r\n}",
+					"raw": "{\r\n    \"username\": \"bolazoo\",\r\n    \"email\": \"mustjoon@gmail.com\",\r\n    \"password\": \"password1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -149,6 +149,32 @@
 					"path": [
 						"api",
 						"recover"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sample-authed-request",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiYm9sYXpzenp6enp6c29vIn0sImlhdCI6MTYwODU2MzQ4MywiZXhwIjoxNjA4NTY0MDgzfQ.UCht2IxyRpeVgGCfpmx2wE6KZPc_MHwTvI1D_YC541g",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1337/api/auth-status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"api",
+						"auth-status"
 					]
 				}
 			},
