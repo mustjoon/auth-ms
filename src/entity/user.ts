@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
 import tokenService from '../service/token';
+import { ACCESS_TOKEN_EXPIRES_IN } from '../constants';
 
 @Entity()
 export class User {
@@ -36,7 +37,7 @@ export class User {
       const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
       const { _id, username } = this;
       const accessToken = jwt.sign({ user: { _id, username } }, ACCESS_TOKEN_SECRET, {
-        expiresIn: '5s',
+        expiresIn: ACCESS_TOKEN_EXPIRES_IN,
       });
       return accessToken;
     } catch (error) {

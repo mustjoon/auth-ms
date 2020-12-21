@@ -5,6 +5,7 @@ import { Token } from '../entity/token';
 import { ErrorHandler } from '../helpers/error';
 
 import { OrmService } from './orm-service';
+import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants';
 
 interface TokenParams {
   refreshToken: string;
@@ -14,7 +15,7 @@ class TokenService extends OrmService<Token> {
     const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
     const { id, username } = user;
     const refreshToken = jwt.sign({ user: { id, username } }, REFRESH_TOKEN_SECRET, {
-      expiresIn: '1d',
+      expiresIn: REFRESH_TOKEN_EXPIRES_IN,
     });
 
     const token = new Token();
@@ -39,7 +40,7 @@ class TokenService extends OrmService<Token> {
 
     const payload = jwt.verify(tokenDoc.token, REFRESH_TOKEN_SECRET);
     const accessToken = jwt.sign({ user: payload }, ACCESS_TOKEN_SECRET, {
-      expiresIn: '10m',
+      expiresIn: ACCESS_TOKEN_EXPIRES_IN,
     });
     return accessToken;
   };
