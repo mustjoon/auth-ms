@@ -3,6 +3,11 @@
 ### Installation
 
  [Node.js](https://nodejs.org/) required.
+ [MySql] required
+
+
+Create .env file and make it match .env.example (Change database user etc)
+Create database 
 
 Install the dependencies and devDependencies and start the server.
 
@@ -18,4 +23,4 @@ $ yarn dev
 
 * Start using docker as dev tool
 * Add more mailer options
-* Maybe create detailed documentation of endpoints etc
+* Maybe create detailed documentation of contents and  endpoints etc
