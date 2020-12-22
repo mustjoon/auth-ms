@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"bolazoo\",\r\n    \"email\": \"mustjoon@gmail.com\",\r\n    \"password\": \"password1\"\r\n}",
+					"raw": "{\r\n    \"username\": \"bolazoozz\",\r\n    \"email\": \"ilf.com\",\r\n    \"password\": \"asd\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,14 +20,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:1337/api/auth/signup",
-					"protocol": "http",
+					"raw": "{{url}}/auth/signup",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "1337",
 					"path": [
-						"api",
 						"auth",
 						"signup"
 					]
@@ -50,14 +47,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:1337/api/auth/login",
-					"protocol": "http",
+					"raw": "{{url}}/auth/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "1337",
 					"path": [
-						"api",
 						"auth",
 						"login"
 					]
@@ -80,14 +74,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:1337/api/auth/refresh_token",
-					"protocol": "http",
+					"raw": "{{url}}/auth/refresh_token",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "1337",
 					"path": [
-						"api",
 						"auth",
 						"refresh_token"
 					]
@@ -102,7 +93,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiYm9sYXpvbyJ9LCJpYXQiOjE2MDg1NDY5MDAsImV4cCI6MTYwODYzMzMwMH0.uDFSwBdPPbMVgIj0RHekP3TOr0QWgiOVBcNTEiNll0M\"\r\n}",
+					"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImJvbGF6b28iLCJlbWFpbCI6Im11c3Rqb29uQGdtYWlsLmNvbSJ9LCJpYXQiOjE2MDg2MjQ0ODMsImV4cCI6MTYwODYyNTY4M30.TWzpTsR8Rlb0FpJn34q-j3ysUFHT9MMXYpfHtQDs8rg\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -110,14 +101,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:1337/api/auth/logout",
-					"protocol": "http",
+					"raw": "{{url}}/auth/logout",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "1337",
 					"path": [
-						"api",
 						"auth",
 						"logout"
 					]
@@ -140,14 +128,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:1337/api/recover",
-					"protocol": "http",
+					"raw": "{{url}}/recover",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "1337",
 					"path": [
-						"api",
 						"recover"
 					]
 				}
@@ -156,30 +141,66 @@
 		},
 		{
 			"name": "sample-authed-request",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiYm9sYXpzenp6enp6c29vIn0sImlhdCI6MTYwODU2MzQ4MywiZXhwIjoxNjA4NTY0MDgzfQ.UCht2IxyRpeVgGCfpmx2wE6KZPc_MHwTvI1D_YC541g",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiYm9sYXpzenp6enp6c29vIn0sImlhdCI6MTYwODU2NDIyNCwiZXhwIjoxNjA4NTY0ODI0fQ.6b3yCNWyre60J9bVMi39_HLA13z2UNUmvfPAEf6zCps",
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "http://localhost:1337/api/auth-status",
-					"protocol": "http",
+					"raw": "{{url}}/auth-status",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "1337",
 					"path": [
-						"api",
 						"auth-status"
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "change password",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJ1c2VybmFtZSI6ImJvbGF6b28iLCJlbWFpbCI6Im11c3Rqb29uQGdtYWlsLmNvbSJ9LCJpYXQiOjE2MDg2MzQ4MzIsImV4cCI6MTYwODYzNjAzMn0.j1VP69-lrVyBrSd8F5sZmrfpOon14zRCK8hCrOoLCl0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\": \"password3d32\",\r\n    \"newPassword\": \"password1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth/change-password",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"change-password"
+					]
+				}
+			},
+			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -1,32 +1,58 @@
 import jwt from 'jsonwebtoken';
 
-import { User } from '../entity/user';
 import { Token } from '../entity/token';
 import { ErrorHandler } from '../middleware/error';
+import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants';
 
 import { OrmService } from './orm-service';
-import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants';
 
 interface TokenParams {
   refreshToken: string;
 }
-class TokenService extends OrmService<Token> {
-  createTokenForUser = async (user: User): Promise<Token> => {
-    const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-    const { id, username } = user;
-    const refreshToken = jwt.sign({ user: { id, username } }, REFRESH_TOKEN_SECRET, {
-      expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-    });
 
+interface TokenOptions {
+  secret: string;
+  expiresIn: string;
+}
+
+export enum TokenEnum {
+  REFRESH = 'REFRESH',
+  ACCESS = 'ACCESS',
+}
+
+interface TokenPayload {
+  user: {
+    username: string;
+    id: string;
+    email: string;
+  };
+}
+
+class TokenService extends OrmService<Token> {
+  saveRefreshToken = async (refreshToken: string): Promise<Token> => {
     const token = new Token();
     token.token = refreshToken;
     token.revoked = false;
-    await this.repository.save(token);
-    return token;
+    return await this.repository.save(token);
+  };
+
+  getTokenOptions = (type: TokenEnum): TokenOptions => {
+    if (type === TokenEnum.REFRESH) {
+      return { secret: process.env.REFRESH_TOKEN_SECRET, expiresIn: REFRESH_TOKEN_EXPIRES_IN };
+    }
+    return { secret: process.env.ACCESS_TOKEN_SECRET, expiresIn: ACCESS_TOKEN_EXPIRES_IN };
+  };
+
+  createToken = (payload: TokenPayload, type: TokenEnum): string => {
+    const { secret, expiresIn } = this.getTokenOptions(type);
+
+    return jwt.sign(payload, secret, {
+      expiresIn,
+    });
   };
 
   generateRefreshToken = async ({ refreshToken }: TokenParams): Promise<string> => {
-    const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
+    const { REFRESH_TOKEN_SECRET } = process.env;
 
     if (!refreshToken) {
       throw new ErrorHandler(404, 'Token missing!');
@@ -39,10 +65,7 @@ class TokenService extends OrmService<Token> {
     }
 
     const payload = jwt.verify(tokenDoc.token, REFRESH_TOKEN_SECRET);
-    const accessToken = jwt.sign({ user: payload }, ACCESS_TOKEN_SECRET, {
-      expiresIn: ACCESS_TOKEN_EXPIRES_IN,
-    });
-    return accessToken;
+    return this.createToken(payload, TokenEnum.ACCESS);
   };
 
   remove = async ({ refreshToken }: TokenParams): Promise<boolean> => {

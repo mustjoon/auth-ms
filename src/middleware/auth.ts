@@ -5,7 +5,6 @@ import { ErrorHandler } from './error';
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.get('Authorization');
-  console.log(token);
   const privateKey = process.env.ACCESS_TOKEN_SECRET;
 
   if (!token) {
@@ -15,6 +14,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction): void
       //if the incoming request has a valid token, we extract the payload from the token and attach it to the request object.
       const payload = jwt.verify(token, privateKey);
       req.user = payload.user;
+
       next();
     } catch (error) {
       // token can be expired or invalid. Send appropriate errors in each case:

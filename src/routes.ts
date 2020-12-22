@@ -10,9 +10,11 @@ router.post('/auth/signup', authController.signup);
 
 router.post('/auth/login', authController.login);
 
-router.post('/auth/refresh_token', authController.generateRefreshToken);
+router.post('/auth/refresh_token', authMiddleware.checkAuth, authController.generateRefreshToken);
 
-router.delete('/auth/logout', authController.logout);
+router.delete('/auth/logout', authMiddleware.checkAuth, authController.logout);
+
+router.patch('/auth/change-password', authMiddleware.checkAuth, authController.changePassword);
 
 router.get('/auth-status', authMiddleware.checkAuth, (req, res) => {
   return res.status(200).json({ user: req.user });

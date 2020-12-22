@@ -17,7 +17,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
-  return res.status(200).send('Welcome');
+  return res.status(200).send('xaxa');
 });
 
 initDb().then(async () => {

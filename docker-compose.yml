@@ -32,6 +32,7 @@ services:
       - mysql 
     volumes:
       - .:/app
+       #- /app/node_modules
 
   app:
     depends_on:

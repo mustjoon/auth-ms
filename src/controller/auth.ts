@@ -15,7 +15,8 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { accessToken, refreshToken } = await userService.validateUserLogin(req.body);
+    const user = await userService.getByEmailAndPassword(req.body);
+    const { accessToken, refreshToken } = await userService.getTokens(user);
     return res.status(201).json({ accessToken, refreshToken });
   } catch (error) {
     next(error);
@@ -35,6 +36,22 @@ export const logout = async (req: Request, res: Response, next: NextFunction): P
   try {
     await tokenService.remove(req.body);
     return res.status(200).json({ success: 'User logged out!' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { id } = req.user;
+    const { oldPassword, newPassword } = req.body;
+    const params = {
+      id,
+      oldPassword,
+      newPassword,
+    };
+    await userService.changePassword(params);
+    return res.status(200).json({ success: 'success' });
   } catch (error) {
     next(error);
   }

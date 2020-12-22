@@ -12,6 +12,5 @@ RUN yarn
 # Bundle app source
 COPY . /app
 
-#ENTRYPOINT ["yarn", "start", "-H", "0.0.0.0"]
 EXPOSE 1337
 CMD [ "yarn", "start" ]
