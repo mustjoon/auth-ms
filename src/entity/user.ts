@@ -44,7 +44,9 @@ export class User {
   @BeforeInsert()
   async saltPassword(): Promise<void> {
     const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, salt);
+    }
   }
 
   @AfterUpdate()

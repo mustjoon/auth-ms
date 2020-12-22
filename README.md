@@ -28,6 +28,14 @@ $
 
 ### Usage
 
+This app can be used as a starter template for NodeJS projects or as seperate MICROSERVICE proxy for handling user authentication
+
+#### As stand-alone app
+
+Intro TBA
+
+#### As proxy
+
 Setup proxy for routes that you want to use (currently supports register, login, password recover, password changing and refreshing token)
 Sample app can be found at https://github.com/mustjoon/sample-auth-app
 
@@ -41,3 +49,5 @@ Sample app can be found at https://github.com/mustjoon/sample-auth-app
 
 * Add more mailer options
 * Maybe create detailed documentation of contents and  endpoints etc
+* Add some kind of logging
+* Add unit tests (who needs those?)

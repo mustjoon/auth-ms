@@ -116,8 +116,14 @@ class UserService extends OrmService<User> {
     }
 
     user.password = password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    const errors = await validate(user);
+    if (errors.length > 0) {
+      throw new ClassValidationErrorHandler(errors);
+    }
+
     await this.repository.save(user);
     return user;
   };

@@ -21,6 +21,6 @@ router.get('/auth-status', authMiddleware.checkAuth, (req, res) => {
 });
 
 router.post('/recover', recoverController.recover);
-router.post('/reset/:token', recoverController.reset);
+router.post('/reset/:token', recoverController.resetPassword);
 
 export default router;
