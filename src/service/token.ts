@@ -5,6 +5,7 @@ import { ErrorHandler } from '../middleware/error';
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants';
 
 import { OrmService } from './orm-service';
+import { User } from '../entity/user';
 
 interface TokenParams {
   refreshToken: string;
@@ -23,16 +24,17 @@ export enum TokenEnum {
 interface TokenPayload {
   user: {
     username: string;
-    id: string;
+    id: number;
     email: string;
   };
 }
 
 class TokenService extends OrmService<Token> {
-  saveRefreshToken = async (refreshToken: string): Promise<Token> => {
+  saveRefreshToken = async (refreshToken: string, user: User): Promise<Token> => {
     const token = new Token();
     token.token = refreshToken;
     token.revoked = false;
+    token.user = user;
     return await this.repository.save(token);
   };
 

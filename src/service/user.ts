@@ -6,6 +6,7 @@ import { User } from '../entity/user';
 import { ErrorHandler, ValidationErrorHandler, ClassValidationErrorHandler } from '../middleware/error';
 
 import { OrmService } from './orm-service';
+import tokenService, { TokenEnum } from './token';
 
 interface Tokens {
   accessToken: string;
@@ -80,9 +81,18 @@ class UserService extends OrmService<User> {
     return _user.password;
   };
 
-  getTokens = async (user: User): Promise<Tokens> => {
-    const accessToken = await user.createAccessToken();
-    const refreshToken = await user.createRefreshToken();
+  generateTokens = async (user: User): Promise<Tokens> => {
+    const payload = {
+      user: {
+        username: user.username,
+        id: user.id,
+        email: user.email,
+      },
+    };
+    const accessToken = tokenService.createToken(payload, TokenEnum.ACCESS);
+    const refreshToken = tokenService.createToken(payload, TokenEnum.REFRESH);
+    await tokenService.saveRefreshToken(refreshToken, user);
+
     return { accessToken, refreshToken };
   };
 

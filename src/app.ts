@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import bodyparser from 'body-parser';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import api from './routes';
 import { handleError } from './middleware/error';
@@ -15,6 +16,7 @@ const app = express();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(cors());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.get('/', (req: Request, res: Response) => {
   return res.status(200).send('xaxa');

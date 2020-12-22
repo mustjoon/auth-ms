@@ -7,12 +7,13 @@ import {
   CreateDateColumn,
   AfterUpdate,
   AfterInsert,
+  OneToMany,
 } from 'typeorm';
 import { IsEmail, Length } from 'class-validator';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
-import tokenService, { TokenEnum } from '../service/token';
+import { Token } from './token';
 
 @Entity()
 export class User {
@@ -40,6 +41,9 @@ export class User {
   @Column({ nullable: true, type: 'timestamp' })
   resetPasswordExpires: Date;
 
+  @OneToMany(() => Token, (token) => token.user)
+  tokens: Token[];
+
   @BeforeUpdate()
   @BeforeInsert()
   async saltPassword(): Promise<void> {
@@ -54,29 +58,6 @@ export class User {
   async deletePassword(): Promise<void> {
     delete this.password;
   }
-
-  createAccessToken = async function (): Promise<string> {
-    try {
-      const { id, username, email } = this;
-      const payload = { user: { id, username, email } };
-      return tokenService.createToken(payload, TokenEnum.ACCESS);
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  };
-
-  createRefreshToken = async function (): Promise<string> {
-    try {
-      const { id, username, email } = this;
-      const payload = { user: { id, username, email } };
-      const refreshToken = tokenService.createToken(payload, TokenEnum.REFRESH);
-      const { token } = await tokenService.saveRefreshToken(refreshToken);
-      return token;
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   generatePasswordReset = function (): void {
     this.resetPasswordToken = crypto.randomBytes(20).toString('hex');

@@ -3,11 +3,19 @@ import { Response, Request, NextFunction } from 'express';
 import userService from '../service/user';
 import tokenService from '../service/token';
 
+const cookieOptions = {
+  maxAge: 1000 * 60 * 60 * 24, // 24h
+  httpOnly: true,
+  signed: true,
+  secure: false, // only on https
+};
+
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const user = await userService.create(req.body);
-    const { accessToken, refreshToken } = await userService.getTokens(user);
-    return res.status(201).json({ accessToken, refreshToken });
+    const { accessToken, refreshToken } = await userService.generateTokens(user);
+    res.cookie('refreshToken', refreshToken, cookieOptions);
+    return res.status(201).json({ accessToken });
   } catch (error) {
     next(error);
   }
@@ -16,8 +24,9 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const user = await userService.getByEmailAndPassword(req.body);
-    const { accessToken, refreshToken } = await userService.getTokens(user);
-    return res.status(201).json({ accessToken, refreshToken });
+    const { accessToken, refreshToken } = await userService.generateTokens(user);
+    res.cookie('refreshToken', refreshToken, cookieOptions);
+    return res.status(201).json({ accessToken });
   } catch (error) {
     next(error);
   }

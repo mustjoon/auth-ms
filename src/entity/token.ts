@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from './user';
 
 @Entity()
 export class Token {
@@ -10,4 +11,7 @@ export class Token {
 
   @Column()
   revoked: boolean;
+
+  @ManyToOne(() => User, (user) => user.tokens)
+  user: User;
 }
